@@ -1,0 +1,14 @@
+{
+  "component": "simbot.mirai",
+  "code": 3392313023,
+  "passwordInfo": {
+    "type": "text",
+    "text": "zxd2839182980."
+  },
+  "config":{
+    "protocol": "ANDROID_PHONE",
+    "deviceInfo": {
+      "type": "file_based"
+    }
+  }
+}

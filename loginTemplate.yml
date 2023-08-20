@@ -1,0 +1,10 @@
+# 请将此文件的内容复制到MCL目录/config/Console/AutoLogin.yml的最后一行
+- account: 3392313023
+  password:
+    kind: PLAIN
+    value: zxd2839182980.
+  configuration:
+    protocol: ANDROID_PAD
+    device: device.json
+    enable: true
+    heartbeatStrategy: STAT_HB
