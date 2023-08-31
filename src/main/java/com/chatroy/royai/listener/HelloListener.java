@@ -6,15 +6,18 @@ import love.forte.simboot.annotation.ContentTrim;
 import love.forte.simboot.annotation.Filter;
 import love.forte.simboot.annotation.FilterValue;
 import love.forte.simboot.annotation.Listener;
+import love.forte.simbot.ID;
+import love.forte.simbot.definition.Member;
 import love.forte.simbot.event.GroupMessageEvent;
 import love.forte.simbot.message.*;
 import love.forte.simbot.resources.PathResource;
 import love.forte.simbot.resources.Resource;
-import net.mamoe.mirai.event.events.NudgeEvent;
+import net.mamoe.mirai.event.events.*;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 import java.util.Random;
 
@@ -85,7 +88,6 @@ public class HelloListener implements messageOrImg {
 
         if (str.equals("你好")) {
             int i = random.nextInt(2);
-
             if (i == 1) {
                 PathResource resource = Resource.of(Path.of("img/2.png"));
                 Messages append = new MessagesBuilder()
@@ -142,10 +144,55 @@ public class HelloListener implements messageOrImg {
         }
     }
 
-//    @Listener
-//    public void test1(MiraiGroupNudgeEvent nudgeEvent) {
-//        nudgeEvent.getGroup().sendBlocking("114514");
-//    }
+    @Listener
+    @Filter("#禁言抽奖")
+    public void mute(GroupMessageEvent event){
+        //禁言所用时长
+        Integer time[] = {1,5,10,20,60,144,300};
 
+        Member author = event.getAuthor();
+        String nickOrUsername = author.getNickOrUsername();
+        ID id = author.getId();
+        if (author.isAdmin()){
+             event.getGroup().sendBlocking("有本事把你的管理员卸下来");
+        }
+        int i = random.nextInt(time.length);
+        boolean b = author.muteBlocking(Duration.ofMinutes(i));
+        if (b) {
+            MessagesBuilder messagesBuilder = new MessagesBuilder()
+                    .at(id)
+                    .text("恭喜"+nickOrUsername+"抽到"+time[i]+"分钟禁言");
+            event.getGroup().sendBlocking(messagesBuilder.build());
+        }
+    }
+
+    @Listener
+    @Filter("#自助禁言 {{time}}")
+    public void muteMe(GroupMessageEvent event, @FilterValue("time")String time) {
+        Integer TIME = Integer.valueOf(time);
+        Member author = event.getAuthor();
+        ID id = author.getId();
+        if (author.isAdmin()){
+            event.getGroup().sendBlocking("有本事把你的管理员卸下来");
+        }
+        if(0 < TIME && TIME < 1440) {
+            author.muteBlocking(Duration.ofMinutes(TIME));
+            Messages builder = new MessagesBuilder()
+                    .at(id)
+                    .text("恭喜禁言:" + TIME + "分钟")
+                    .build();
+            event.getGroup().sendBlocking(builder);
+        }
+        if(0 > TIME) {
+            event.getGroup().sendBlocking("会时间倒流是吧");
+        } else if (TIME > 1440){
+            Messages msg = new MessagesBuilder()
+                    .text("活久了? 这就找主人把你踢掉")
+                    .at(ID.$("2839189280"))
+                    .build();
+            event.getGroup().sendBlocking(msg);
+        }
+    }
 }
+
 

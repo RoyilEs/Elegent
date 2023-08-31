@@ -44,7 +44,7 @@ public class MasterListener implements messageOrImg , User {
 
     @Listener
     @Filter(value = "叫主人")
-    public void Roy(GroupMessageEvent event, MiraiGroupNudgeEvent nudgeEvent){
+    public void Roy(GroupMessageEvent event){
 //        获得发送的成员信息
         Member author = event.getAuthor();
         System.out.println(author);
