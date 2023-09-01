@@ -148,22 +148,24 @@ public class HelloListener implements messageOrImg {
     @Filter("#禁言抽奖")
     public void mute(GroupMessageEvent event){
         //禁言所用时长
-        Integer time[] = {1,5,10,20,60,144,300};
+        Integer time[] = {1,2,3,15,5,10,20,30,60,144,300};
 
         Member author = event.getAuthor();
         String nickOrUsername = author.getNickOrUsername();
         ID id = author.getId();
         if (author.isAdmin()){
              event.getGroup().sendBlocking("有本事把你的管理员卸下来");
+            return;
         }
-        int i = random.nextInt(time.length);
-        boolean b = author.muteBlocking(Duration.ofMinutes(i));
-        if (b) {
-            MessagesBuilder messagesBuilder = new MessagesBuilder()
-                    .at(id)
-                    .text("恭喜"+nickOrUsername+"抽到"+time[i]+"分钟禁言");
-            event.getGroup().sendBlocking(messagesBuilder.build());
-        }
+            int i = random.nextInt(time.length);
+            boolean b = author.muteBlocking(Duration.ofMinutes(i));
+            if (b) {
+                MessagesBuilder messagesBuilder = new MessagesBuilder()
+                        .at(id)
+                        .text("恭喜"+nickOrUsername+"抽到"+time[i]+"分钟禁言");
+                event.getGroup().sendBlocking(messagesBuilder.build());
+            }
+
     }
 
     @Listener
@@ -174,24 +176,26 @@ public class HelloListener implements messageOrImg {
         ID id = author.getId();
         if (author.isAdmin()){
             event.getGroup().sendBlocking("有本事把你的管理员卸下来");
+            return;
         }
-        if(0 < TIME && TIME < 1440) {
-            author.muteBlocking(Duration.ofMinutes(TIME));
-            Messages builder = new MessagesBuilder()
-                    .at(id)
-                    .text("恭喜禁言:" + TIME + "分钟")
-                    .build();
-            event.getGroup().sendBlocking(builder);
-        }
-        if(0 > TIME) {
-            event.getGroup().sendBlocking("会时间倒流是吧");
-        } else if (TIME > 1440){
-            Messages msg = new MessagesBuilder()
-                    .text("活久了? 这就找主人把你踢掉")
-                    .at(ID.$("2839189280"))
-                    .build();
-            event.getGroup().sendBlocking(msg);
-        }
+            if(0 < TIME && TIME < 1440) {
+                author.muteBlocking(Duration.ofMinutes(TIME));
+                Messages builder = new MessagesBuilder()
+                        .at(id)
+                        .text("恭喜禁言:" + TIME + "分钟")
+                        .build();
+                event.getGroup().sendBlocking(builder);
+            }
+            if(0 > TIME) {
+                event.getGroup().sendBlocking("会时间倒流是吧");
+            } else if (TIME > 1440){
+                Messages msg = new MessagesBuilder()
+                        .text("活久了? 这就找主人把你踢掉")
+                        .at(ID.$("Rooooyiii"))
+                        .build();
+                event.getGroup().sendAsync(msg);
+            }
+
     }
 }
 
