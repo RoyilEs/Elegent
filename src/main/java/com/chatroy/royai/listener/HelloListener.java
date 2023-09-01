@@ -15,6 +15,8 @@ import love.forte.simbot.resources.Resource;
 import net.mamoe.mirai.event.events.*;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -31,9 +33,10 @@ public class HelloListener implements messageOrImg {
     @Filter(value = "/help")
     public void help(GroupMessageEvent event){
         event.getSource().sendBlocking("如果无聊了可以@Royill 你好(会有意想不到的惊喜)\ntest功能\n#求签功能" +
-                "\n#来点AI图片(输入数字指定图片)"
+                "\n#来点AI图片(输入数字指定图片)" +
+                "\n#来点二次元\n#禁言抽奖与自助禁言(bot必须是管理员哦)"+
+                "#随机歌曲"
                  );
-//        "\n需要定制功能请联系Roy(QQ:2839182980)"
     }
 
     @Listener
@@ -43,8 +46,19 @@ public class HelloListener implements messageOrImg {
         MessagesBuilder image = new MessagesBuilder().image(IMG_AI[i]);
         event.getSource().sendBlocking(image.build());
     }
+    @Listener
+    @Filter(value = "#来点二次元")
+    public void Img2(GroupMessageEvent event) throws IOException {
+        MessagesBuilder messagesBuilder = new MessagesBuilder();
+        int i = random.nextInt(2);
+        if (i == 1 ){
+            messagesBuilder.image(Resource.of(new URL("https://imgapi.xl0408.top/index.php")));
+        } else {
+            messagesBuilder.image(Resource.of(new URL("https://api.oick.cn/random/api.php?type=pc")));
+        }
+        event.getGroup().sendBlocking(messagesBuilder.build());
 
-
+    }
 
     @Listener
     @Filter(value = "{{str}}",targets = @Filter.Targets(atBot = true))
