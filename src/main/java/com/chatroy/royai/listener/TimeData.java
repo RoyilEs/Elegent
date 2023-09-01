@@ -21,7 +21,6 @@ public class TimeData {
 
     @Override
     public String toString() {
-
         return "TimeData\n" + "当前时间:" + time +  "\ndate:" + date;
     }
 
@@ -29,7 +28,7 @@ public class TimeData {
     public class GsonReadWebPage {
         @Listener
         @Filter(value = "报时")
-        public void main(GroupMessageEvent event) throws IOException {
+        public void TimeData(GroupMessageEvent event) throws IOException {
 
             String webPage = "http://time.jsontest.com";
 

@@ -25,42 +25,7 @@ import java.util.Random;
 public class HelloListener implements messageOrImg {
     Random random = new Random();
     SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
-
     String  tx = "腾讯是什么?tx是什么?";
-
-
-//    @Listener
-//    @Filter(value = "#查询歌曲 {{keyword}}")
-//    public ResponseEntity<MessageReceipt> music(GroupMessageEvent event, @FilterValue("keyword")String keyword, MusicUrl musicUrl) {
-//
-//        //获得群昵称
-//        String nickname = event.getAuthor().getNickname();
-//        //获得ID
-//        String id = String.valueOf(event.getAuthor().getId());
-//
-//        //获取Url
-//        String url = "https://v2.alapi.cn/api/music/search?keyword="+keyword+"&token="+ musicUrl.getToken();
-//
-//        return ResponseEntity.ok(messageReceipt);
-//    }
-
-
-//    //猜数字游戏
-//    @Listener
-//    @Filter(value = "#随机猜数字({{num}})")
-//    public void randomGame(GroupMessageEvent event, @FilterValue("num")String num) {
-//
-//        Integer num2 = random.nextInt(Integer.parseInt(num)) + 1;
-//
-//        for (int i = 0; i < 10; i++) {
-//            while (true)
-//            {
-//
-//            }
-//        }
-//    }
-
-
 
     @Listener
     @Filter(value = "/help")
@@ -195,7 +160,6 @@ public class HelloListener implements messageOrImg {
                         .build();
                 event.getGroup().sendAsync(msg);
             }
-
     }
 }
 
