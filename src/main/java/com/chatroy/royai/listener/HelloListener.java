@@ -2,6 +2,9 @@ package com.chatroy.royai.listener;
 
 
 import com.chatroy.royai.MsgOrImg.messageOrImg;
+import com.chatroy.royai.utils.OK3HttpClient;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import love.forte.simboot.annotation.ContentTrim;
 import love.forte.simboot.annotation.Filter;
 import love.forte.simboot.annotation.FilterValue;
@@ -12,10 +15,10 @@ import love.forte.simbot.event.GroupMessageEvent;
 import love.forte.simbot.message.*;
 import love.forte.simbot.resources.PathResource;
 import love.forte.simbot.resources.Resource;
-import net.mamoe.mirai.event.events.*;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -31,13 +34,17 @@ public class HelloListener implements messageOrImg {
 
     @Listener
     @Filter(value = "/help")
-    public void help(GroupMessageEvent event){
-        event.getSource().sendBlocking("如果无聊了可以@Royill 你好(会有意想不到的惊喜)\ntest功能\n#求签功能" +
-                "\n#来点AI图片(输入数字指定图片)" +
-                "\n#来点二次元\n#禁言抽奖与自助禁言(bot必须是管理员哦)"+
-                "#随机歌曲"
-                 );
+    public void help(GroupMessageEvent event) throws MalformedURLException {
+        MessagesBuilder messagesBuilder = new MessagesBuilder()
+                .text("如果无聊了可以@Royill 你好(会有意想不到的惊喜)\ntest功能\n#求签功能" +
+                        "\n#来点AI图片(输入数字指定图片)" +
+                        "\n#来点二次元\n#禁言抽奖与自助禁言(bot必须是管理员哦)"+
+                        "\n#随机歌曲")
+                .image(Resource.of(new URL("https://api.paugram.com/wallpaper/")));
+        event.getGroup().sendBlocking(messagesBuilder.build());
     }
+
+
 
     @Listener
     @Filter(value = "#来点AI图片")
@@ -50,11 +57,17 @@ public class HelloListener implements messageOrImg {
     @Filter(value = "#来点二次元")
     public void Img2(GroupMessageEvent event) throws IOException {
         MessagesBuilder messagesBuilder = new MessagesBuilder();
-        int i = random.nextInt(2);
-        if (i == 1 ){
+        int i = random.nextInt(3);
+        if (i == 1){
             messagesBuilder.image(Resource.of(new URL("https://imgapi.xl0408.top/index.php")));
-        } else {
+        }
+        if (i == 2){
             messagesBuilder.image(Resource.of(new URL("https://api.oick.cn/random/api.php?type=pc")));
+        } else {
+            String s = OK3HttpClient.httpGet("https://api.vvhan.com/api/acgimg?type=json", null, null);
+            JsonObject jsonObject = new Gson().fromJson(s, JsonObject.class);
+            String imgurl = jsonObject.get("imgurl").getAsString();
+            messagesBuilder.image(Resource.of(new URL(imgurl)));
         }
         event.getGroup().sendBlocking(messagesBuilder.build());
 
@@ -63,7 +76,7 @@ public class HelloListener implements messageOrImg {
     @Listener
     @Filter(value = "{{str}}",targets = @Filter.Targets(atBot = true))
     @ContentTrim // 当匹配被at时，将'at'这个特殊消息移除后，剩余的文本消息大概率存在前后空格，通过此注解在匹配的时候忽略前后空格
-    public void onChannelMessage(GroupMessageEvent event , @FilterValue("str")String str, NudgeEvent nudgeEvent) {// 将要监听的事件类型放在参数里，即代表监听此类型的消息
+    public void onChannelMessage(GroupMessageEvent event , @FilterValue("str")String str) {// 将要监听的事件类型放在参数里，即代表监听此类型的消息
 
         if (str.equals("你好")) {
             int i = random.nextInt(2);
