@@ -11,6 +11,7 @@ import love.forte.simboot.annotation.FilterValue;
 import love.forte.simboot.annotation.Listener;
 import love.forte.simbot.ID;
 import love.forte.simbot.definition.Member;
+import love.forte.simbot.event.FriendMessageEvent;
 import love.forte.simbot.event.GroupMessageEvent;
 import love.forte.simbot.message.*;
 import love.forte.simbot.resources.PathResource;
@@ -39,7 +40,9 @@ public class HelloListener implements messageOrImg {
                 .text("如果无聊了可以@Royill 你好(会有意想不到的惊喜)\ntest功能\n#求签功能" +
                         "\n#来点AI图片(输入数字指定图片)" +
                         "\n#来点二次元\n#禁言抽奖与自助禁言(bot必须是管理员哦)"+
-                        "\n#随机歌曲")
+                        "\n#随机歌曲"+
+                        "\n#对话 (不是ChatGPT 只是一个简单的对话bot)"+
+                        "\n#合成 (两个emoji！别用其他的 api也有问题 有些不识别（)")
                 .image(Resource.of(new URL("https://api.paugram.com/wallpaper/")));
         event.getGroup().sendBlocking(messagesBuilder.build());
     }
@@ -71,6 +74,22 @@ public class HelloListener implements messageOrImg {
         }
         event.getGroup().sendBlocking(messagesBuilder.build());
 
+    }
+
+    @Listener
+    @Filter(value = "#来点色图")
+    public void ImgR18(FriendMessageEvent event) throws MalformedURLException {
+        String s = OK3HttpClient.httpGet("https://api.苏苏.cn/API/R18.php", null, null);
+        JsonObject jsonObject = new Gson().fromJson(s, JsonObject.class);
+        JsonObject data = jsonObject.getAsJsonObject("data");
+        String author = data.get("画家").getAsString();
+        String title = data.get("标题").getAsString();
+        String img = data.get("图片").getAsString();
+        MessagesBuilder messagesBuilder = new MessagesBuilder()
+                .append("标题："+title)
+                .append("\n画家："+author+"\n")
+                .image(Resource.of(new URL(img)));
+        event.getFriend().sendBlocking(messagesBuilder.build());
     }
 
     @Listener
@@ -189,5 +208,3 @@ public class HelloListener implements messageOrImg {
             }
     }
 }
-
-

@@ -92,11 +92,8 @@ public class MasterListener implements messageOrImg , User {
         }
         //Roy
         if (name.matches("Roy") ||name.matches("zxd")) {
-//            int i = random.nextInt(2);
-//            if (i == 1) {
                 int Roy1 = random.nextInt(Roy.length);
                 messageEvent.getGroup().sendBlocking(Roy[Roy1]);
-//            }
         }
         //rtwyzz 李磊
         if (RTWYZZ.contains(name)) {
