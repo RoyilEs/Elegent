@@ -1,9 +1,9 @@
 {
   "component": "simbot.mirai",
-  "code": 3392313023,
+  "code": "QQ账号",
   "passwordInfo": {
     "type": "text",
-    "text": "zxd2839182980."
+    "text": "password"
   },
   "config":{
     "protocol": "ANDROID_PHONE",
