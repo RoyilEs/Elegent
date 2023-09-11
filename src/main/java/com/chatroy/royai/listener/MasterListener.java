@@ -2,17 +2,13 @@ package com.chatroy.royai.listener;
 
 import com.chatroy.royai.MsgOrImg.User;
 import com.chatroy.royai.MsgOrImg.messageOrImg;
-import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import love.forte.simboot.annotation.ContentTrim;
 import love.forte.simboot.annotation.Filter;
 import love.forte.simboot.annotation.FilterValue;
 import love.forte.simboot.annotation.Listener;
 import love.forte.simboot.filter.MatchType;
-import love.forte.simbot.component.mirai.event.MiraiGroupNudgeEvent;
-import love.forte.simbot.definition.Group;
 import love.forte.simbot.definition.Member;
 import love.forte.simbot.event.GroupMessageEvent;
-import love.forte.simbot.message.Messages;
 import love.forte.simbot.message.MessagesBuilder;
 import org.springframework.stereotype.Component;
 
