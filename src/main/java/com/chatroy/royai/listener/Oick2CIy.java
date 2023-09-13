@@ -49,13 +49,24 @@ public class Oick2CIy {
    @Listener
    @Filter(value = "#对话 {{msg}}")
    public void ChatMsg(GroupMessageEvent event, @FilterValue("msg")String msg){
+      String nickOrUsername = event.getAuthor().getNickOrUsername();
       MessagesBuilder messagesBuilder = new MessagesBuilder();
       String s = OK3HttpClient.httpGet("https://apis.tianapi.com/robot/index?key="+app_key+"&question=" + msg, null, null);
       JsonObject jsonObject = new Gson().fromJson(s, JsonObject.class);
       String asString = jsonObject.getAsJsonObject("result").get("reply").getAsString();
-      messagesBuilder.text(asString);
+
+      String msg_bot = asString.replace("<br>","\n")
+              .replace("{robotname}","Royill")
+              .replace("{appellation}",nickOrUsername)
+              .replace("{robotsex}","主人说了算")
+              .replace("{hometown}","地球")
+              .replace("康康","Roy")
+              .replace("{constellation}","地面人")
+              .replace("{robothobby}","喜欢你"+nickOrUsername);
+       messagesBuilder.text(msg_bot);
+
       event.getGroup().sendBlocking(messagesBuilder.build());
-      System.out.println(asString);
+      System.out.println(msg_bot);
    }
 
    @Listener

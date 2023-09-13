@@ -3,7 +3,6 @@ package com.chatroy.royai.listener;
 import com.chatroy.royai.utils.OK3HttpClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import love.forte.simboot.annotation.Listener;
 import love.forte.simbot.event.GroupMessageEvent;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.Random;
 
 @Component
@@ -77,7 +75,7 @@ public class DDTool {
 
                             ).build();
                     event.getGroup().sendBlocking(msg);
-                }
+                } break;
             case "#现在看谁" :
             case "#现在d谁"  :
                 String res_now = OK3HttpClient.httpGet(DD_Api + "/v1/living", null, null);
