@@ -64,7 +64,7 @@ public class Oick2CIy {
       String s = OK3HttpClient.httpGet("https://api.eihei.site/API/emoji_synthesis.php?emoji_one="+emoji1+"&emoji_two="+emoji2, null, null);
       JsonObject jsonObject = new Gson().fromJson(s, JsonObject.class);
       String s1 = jsonObject.get("text").getAsString();
-      int code = jsonObject.get("code").getAsInt();
+      Integer code = Integer.valueOf(jsonObject.get("code").getAsString());
       //获得合成表情
       String data = jsonObject.getAsJsonObject("url").get("url").getAsString();
       if (code == 1) {
